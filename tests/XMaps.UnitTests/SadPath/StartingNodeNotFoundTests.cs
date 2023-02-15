@@ -30,8 +30,9 @@ public class StartingNodeNotFoundTests
     {
         var mapper = new WebpageMapper<StartingNodeNotFoundModel>();
 
-        var exception = Assert.Throws<StartingNodeNotFoundException>(() => mapper.Map(GivenHtml));
+        var act = () => mapper.Map(GivenHtml);
 
+        var exception = act.Should().ThrowExactly<StartingNodeNotFoundException>().Which;
         Assert.Multiple(
             () => exception.RootModelType.Should().Be(typeof(StartingNodeNotFoundModel)),
             () => exception.StartingXPath.Should().Be("//div[@class='main']")

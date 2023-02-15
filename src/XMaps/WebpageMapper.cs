@@ -85,26 +85,29 @@ public sealed class WebpageMapper<TModel> where TModel : class
         {
             var parameter = constructorParameters[i];
             var xpath = GetParameterXPath(parameter);
-
             var descendantNode = startingNode.SelectFirstOrDefault(xpath);
-            if (descendantNode is null)
-            {
-                throw new Exceptions.NodeNotFoundException(
-                    $"Node not found for parameter '{parameter.Name}' of type '{parameter.Type.Name}'.",
-                    typeof(TModel),
-                    modelType,
-                    parameter.Name,
-                    xpath,
-                    parentXPath
-                );
-            }
-
-            var value = MapNodeToModel(descendantNode, parameter.Type, xpath);
-
-            constructorArguments[i] = value;
+            constructorArguments[i] = EvaluateParameter(descendantNode, parameter, modelType, xpath,  parentXPath);
         }
 
         return ReflectionUtilities.InstantiateDefensively(modelType, constructorArguments, constructorParameters);
+    }
+
+    private object? EvaluateParameter(IHtmlNode? descendantNode, ModelConstructorParameter parameter,
+        Type modelType, string xpath, string? parentXPath)
+    {
+        if (descendantNode is not null) return MapNodeToModel(descendantNode, parameter.Type, xpath);
+
+        if (parameter.IsNullable)
+            return null;
+
+        throw new Exceptions.NodeNotFoundException(
+            $"Node not found for parameter '{parameter.Name}' of type '{parameter.Type.Name}'.",
+            typeof(TModel),
+            modelType,
+            parameter.Name,
+            xpath,
+            parentXPath
+        );
     }
 
     private static IHtmlNode GetStartingNode(HtmlDocument document, string? rootXPath)

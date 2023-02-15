@@ -20,6 +20,11 @@ Hierarchy of model types:
 2. **Composite models** - the mapper must recursively instantiate sub-models in order to create an instance of the composite model.
    - `public new(Model1 model1, ..., ModelN modelN)` - a class with a **single public constructor,** whose **all parameters are valid models**.
 
+## Handling nodes that were not found
+
+- `T PropertyName` - if a node is not found, then the mapper throws an exception.
+- `T? PropertyName` - if a node is not found, then the result model property is `null`.
+
 ## Targeting .NET 6
 
 XMaps targets the latest LTS version of the .NET framework.

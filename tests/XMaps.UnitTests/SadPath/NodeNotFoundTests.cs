@@ -39,11 +39,12 @@ public class NodeNotFoundTests
     {
         var mapper = new WebpageMapper<ArticleWithoutFooterModel>();
 
-        var exception = Assert.Throws<NodeNotFoundException>(() => mapper.Map(GivenSampleHtml));
+        var act = () => mapper.Map(GivenSampleHtml);
 
+        var exception = act.Should().ThrowExactly<NodeNotFoundException>().Which;
         Assert.Multiple(
-            () => exception.RootModelType.Should().Be(typeof(ArticleWithoutFooterModel)),
-            () => exception.EvaluatedModelType.Should().Be(typeof(ArticleWithoutFooterModel)),
+            () => exception.RootModelType.Should().Be<ArticleWithoutFooterModel>(),
+            () => exception.EvaluatedModelType.Should().Be<ArticleWithoutFooterModel>(),
             () => exception.EvaluatedParameterName.Should().Be("Footer"),
             () => exception.EvaluatedRelativeXPath.Should().Be("footer"),
             () => exception.ParentXPath.Should().Be("//body/article[2]")
