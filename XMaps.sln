@@ -5,7 +5,11 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E4128A88-3280-4FB7-AE91-297D18D2928E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XMaps", "src\XMaps\XMaps.csproj", "{6CEFD042-25D4-4014-9FBC-FBE851A19306}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XMaps", "src\XMaps\XMaps.csproj", "{6CEFD042-25D4-4014-9FBC-FBE851A19306}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{34637004-2174-45E3-ACBF-A1FC1AA96ACA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "XMaps.UnitTests", "tests\XMaps.UnitTests\XMaps.UnitTests.csproj", "{11725211-ED49-4188-8CA7-4F86726305F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,12 +21,17 @@ Global
 		{6CEFD042-25D4-4014-9FBC-FBE851A19306}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CEFD042-25D4-4014-9FBC-FBE851A19306}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CEFD042-25D4-4014-9FBC-FBE851A19306}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11725211-ED49-4188-8CA7-4F86726305F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11725211-ED49-4188-8CA7-4F86726305F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11725211-ED49-4188-8CA7-4F86726305F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11725211-ED49-4188-8CA7-4F86726305F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6CEFD042-25D4-4014-9FBC-FBE851A19306} = {E4128A88-3280-4FB7-AE91-297D18D2928E}
+		{11725211-ED49-4188-8CA7-4F86726305F7} = {34637004-2174-45E3-ACBF-A1FC1AA96ACA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {09FB40D7-BAFB-4427-A4D0-940702697882}

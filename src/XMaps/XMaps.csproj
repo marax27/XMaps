@@ -3,9 +3,13 @@
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
 		<Nullable>enable</Nullable>
-		<LangVersion>preview</LangVersion>
-		<EnablePreviewFeatures>True</EnablePreviewFeatures>
+		<LangVersion>latest</LangVersion>
+		<EnablePreviewFeatures>False</EnablePreviewFeatures>
 		<GenerateRequiresPreviewFeaturesAttribute>False</GenerateRequiresPreviewFeaturesAttribute>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="HtmlAgilityPack" Version="1.11.46" />
+	</ItemGroup>
 
 </Project>
