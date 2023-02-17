@@ -25,6 +25,10 @@ Hierarchy of model types:
 - `T PropertyName` - if a node is not found, then the mapper throws an exception.
 - `T? PropertyName` - if a node is not found, then the result model property is `null`.
 
+## Implicit transformation of character references
+
+`&amp; -> &` etc.
+
 ## Targeting .NET 6
 
 XMaps targets the latest LTS version of the .NET framework.

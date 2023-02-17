@@ -10,6 +10,7 @@ namespace XMaps;
 internal interface IHtmlNode
 {
     string InnerText { get; }
+    string Name { get; }
 
     IHtmlNode? SelectFirstOrDefault(string xpath);
     IEnumerable<IHtmlNode> SelectAll(string xpath);
@@ -24,7 +25,9 @@ internal sealed class HtmlAgilityPackNode : IHtmlNode
         _node = node ?? throw new ArgumentNullException(nameof(node));
     }
 
-    public string InnerText => _node.InnerText;
+    public string InnerText => HtmlEntity.DeEntitize(_node.InnerText);
+
+    public string Name => _node.Name;
 
     public IHtmlNode? SelectFirstOrDefault(string xpath)
     {
@@ -85,11 +88,38 @@ public sealed class WebpageMapper<TModel> where TModel : class
         {
             var parameter = constructorParameters[i];
             var xpath = GetParameterXPath(parameter);
-            var descendantNode = startingNode.SelectFirstOrDefault(xpath);
-            constructorArguments[i] = EvaluateParameter(descendantNode, parameter, modelType, xpath,  parentXPath);
+
+            var collectionTypeArgument = CheckForCollectionType(parameter, modelType);
+            if (collectionTypeArgument is null)
+            {
+                var descendantNode = startingNode.SelectFirstOrDefault(xpath);
+                constructorArguments[i] = EvaluateParameter(descendantNode, parameter, modelType, xpath, parentXPath);
+            }
+            else
+            {
+                var descendantNodes = startingNode.SelectAll(xpath).ToArray();
+                constructorArguments[i] = EvaluateCollectionParameter(descendantNodes, collectionTypeArgument, parentXPath);
+            }
         }
 
         return ReflectionUtilities.InstantiateDefensively(modelType, constructorArguments, constructorParameters);
+    }
+
+    private object EvaluateCollectionParameter(IReadOnlyList<IHtmlNode> descendantNodes, Type instanceType, string? parentXPath)
+    {
+        var listType = typeof(List<>).MakeGenericType(instanceType);
+        var list = Activator.CreateInstance(listType)
+                   ?? throw new InvalidOperationException($"Failed to instantiate a list of type '{listType.Name}'.");
+        var addMethod = listType.GetMethod("Add")
+                        ?? throw new InvalidOperationException($"Failed to find 'Add' method on a list of type '{listType.Name}'.");
+
+        foreach (var descendantNode in descendantNodes)
+        {
+            var value = MapNodeToModel(descendantNode, instanceType, parentXPath);
+            addMethod.Invoke(list, new[] { value });
+        }
+
+        return list;
     }
 
     private object? EvaluateParameter(IHtmlNode? descendantNode, ModelConstructorParameter parameter,
@@ -123,6 +153,44 @@ public sealed class WebpageMapper<TModel> where TModel : class
         }
 
         return new HtmlAgilityPackNode(startingNode);
+    }
+
+    private static Type? CheckForCollectionType(ModelConstructorParameter parameter, Type modelType)
+    {
+        // Special case: string is a collection type (implements IEnumerable<char>),
+        // but we want to map a single node to a string.
+        if (parameter.Type == typeof(string))
+            return null;
+
+        var isCollectionType = parameter.Type.IsAssignableTo(typeof(System.Collections.IEnumerable));
+        if (!isCollectionType)
+            return null;
+
+        if (!parameter.Type.IsGenericType)
+        {
+            throw new CollectionTypeDefinitionException(
+                $"Property '{parameter.Name}' has a non-generic collection type '{parameter.Type.Name}'. Use 'List<T>' or an interface implemented by 'List<T>'.",
+                typeof(TModel),
+                parameter.Type,
+                modelType
+            );
+        }
+
+        var genericArgument = parameter.Type.GetGenericArguments()[0];
+
+        var listType = typeof(List<>).MakeGenericType(genericArgument);
+        var canAssignList = parameter.Type.IsAssignableFrom(listType);
+        if (!canAssignList)
+        {
+            throw new CollectionTypeDefinitionException(
+                $"Property '{parameter.Name}' has an invalid collection type '{parameter.Type.Name}'. Use 'List<T>' or an interface implemented by 'List<T>'.",
+                typeof(TModel),
+                parameter.Type,
+                modelType
+            );
+        }
+
+        return genericArgument;
     }
 
     private static string? TryGetRootXPath()
