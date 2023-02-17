@@ -1,20 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using HtmlAgilityPack;
 using XMaps.Exceptions;
 using XMaps.Reflection;
 
 namespace XMaps;
-
-internal interface IHtmlNode
-{
-    string InnerText { get; }
-    string Name { get; }
-
-    IHtmlNode? SelectFirstOrDefault(string xpath);
-    IEnumerable<IHtmlNode> SelectAll(string xpath);
-}
 
 internal sealed class HtmlAgilityPackNode : IHtmlNode
 {
@@ -23,11 +15,15 @@ internal sealed class HtmlAgilityPackNode : IHtmlNode
     internal HtmlAgilityPackNode(HtmlNode node)
     {
         _node = node ?? throw new ArgumentNullException(nameof(node));
+        HtmlAttributes = _node.Attributes
+            .ToDictionary(x => x.Name, x => x.Value);
     }
 
     public string InnerText => HtmlEntity.DeEntitize(_node.InnerText);
 
     public string Name => _node.Name;
+
+    public IReadOnlyDictionary<string, string> HtmlAttributes { get; }
 
     public IHtmlNode? SelectFirstOrDefault(string xpath)
     {
@@ -84,9 +80,19 @@ public sealed class WebpageMapper<TModel> where TModel : class
         var constructorParameters = ReflectionUtilities.GetModelConstructorParameters(modelType, typeof(TModel));
         var constructorArguments = new object?[constructorParameters.Count];
 
+        var isCustomLeafModel = false;
+
         for (var i = 0; i < constructorArguments.Length; ++i)
         {
             var parameter = constructorParameters[i];
+
+            if (parameter.Type == typeof(IHtmlNode))
+            {
+                constructorArguments[i] = startingNode;
+                isCustomLeafModel = true;
+                continue;
+            }
+
             var xpath = GetParameterXPath(parameter);
 
             var collectionTypeArgument = CheckForCollectionType(parameter, modelType);
@@ -102,7 +108,17 @@ public sealed class WebpageMapper<TModel> where TModel : class
             }
         }
 
-        return ReflectionUtilities.InstantiateDefensively(modelType, constructorArguments, constructorParameters);
+        try
+        {
+            return ReflectionUtilities.InstantiateDefensively(modelType, constructorArguments, constructorParameters);
+        }
+        catch (TargetInvocationException ex) when (isCustomLeafModel)
+        {
+            throw new LeafModelException(
+                $"Failed to instantiate the '{modelType.Name}'.", typeof(TModel), ex.InnerException,
+                modelType, parentXPath
+            );
+        }
     }
 
     private object EvaluateCollectionParameter(IReadOnlyList<IHtmlNode> descendantNodes, Type instanceType, string? parentXPath)

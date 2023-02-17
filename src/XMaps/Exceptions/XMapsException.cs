@@ -12,7 +12,8 @@ public abstract class XMapsException : Exception
 {
     public Type RootModelType { get; }
 
-    protected XMapsException(string message, Type rootModelType) : base(message)
+    protected XMapsException(string message, Type rootModelType, Exception? innerException = null)
+        : base(message, innerException)
     {
         RootModelType = rootModelType;
     }

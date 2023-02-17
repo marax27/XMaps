@@ -7,6 +7,6 @@ namespace XMaps.Exceptions;
 /// </summary>
 public class MappingException : XMapsException
 {
-    protected MappingException(string message, Type rootModelType)
-        : base(message, rootModelType) { }
+    protected MappingException(string message, Type rootModelType, Exception? innerException = null)
+        : base(message, rootModelType, innerException) { }
 }
