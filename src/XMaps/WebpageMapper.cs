@@ -1,8 +1,8 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using HtmlAgilityPack;
 using XMaps.Exceptions;
 using XMaps.Reflection;
 

@@ -1,6 +1,6 @@
 ﻿using XMaps.Exceptions;
 
-namespace XMaps.UnitTests.SadPath;
+namespace XMaps.UnitTests.Basics.SadPath;
 
 public class ModelConstructorTests
 {

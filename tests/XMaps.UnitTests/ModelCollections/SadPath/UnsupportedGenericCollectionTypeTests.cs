@@ -1,6 +1,7 @@
 ﻿using XMaps.Exceptions;
+using XMaps.UnitTests.SadPath;
 
-namespace XMaps.UnitTests.SadPath;
+namespace XMaps.UnitTests.ModelCollections.SadPath;
 
 public class UnsupportedGenericCollectionTypeTests
 {

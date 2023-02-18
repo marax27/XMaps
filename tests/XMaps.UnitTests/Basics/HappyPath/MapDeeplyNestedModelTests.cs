@@ -1,4 +1,4 @@
-﻿namespace XMaps.UnitTests.HappyPath;
+﻿namespace XMaps.UnitTests.Basics.HappyPath;
 
 public class MapDeeplyNestedModelTests
 {

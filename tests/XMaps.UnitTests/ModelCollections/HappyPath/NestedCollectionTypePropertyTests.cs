@@ -1,4 +1,4 @@
-﻿namespace XMaps.UnitTests.HappyPath;
+﻿namespace XMaps.UnitTests.ModelCollections.HappyPath;
 
 public class NestedCollectionTypePropertyTests
 {

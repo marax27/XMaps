@@ -7,6 +7,6 @@ namespace XMaps.Exceptions;
 /// </summary>
 public class ModelDefinitionException : XMapsException
 {
-    internal ModelDefinitionException(string message, Type rootModelType) 
+    internal ModelDefinitionException(string message, Type rootModelType)
         : base(message, rootModelType) { }
 }

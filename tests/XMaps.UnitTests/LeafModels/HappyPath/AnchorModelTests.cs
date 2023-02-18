@@ -1,6 +1,6 @@
 using XMaps.LeafModels;
 
-namespace XMaps.UnitTests.HappyPath.LeafModels;
+namespace XMaps.UnitTests.LeafModels.HappyPath;
 
 public class AnchorModelTests
 {
