@@ -1,7 +1,7 @@
 ﻿using System.Collections.Specialized;
 using XMaps.Exceptions;
 
-namespace XMaps.UnitTests.SadPath;
+namespace XMaps.UnitTests.ModelCollections.SadPath;
 
 public class UnsupportedNonGenericCollectionTypeTests
 {
@@ -20,9 +20,7 @@ public class UnsupportedNonGenericCollectionTypeTests
     [Fact]
     public void GivenNonGenericIEnumerablePropertyWhenMappingThenThrowExpectedException()
     {
-        var mapper = new WebpageMapper<SimpleCollectionModel<System.Collections.IEnumerable>>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<SimpleCollectionModel<System.Collections.IEnumerable>>(GivenHtml);
 
         act.Should().ThrowExactly<CollectionTypeDefinitionException>()
             .WithMessage("Property 'Paragraphs' has a non-generic collection type 'IEnumerable'. Use 'List<T>' or an interface implemented by 'List<T>'.");
@@ -31,9 +29,7 @@ public class UnsupportedNonGenericCollectionTypeTests
     [Fact]
     public void GivenNonGenericIEnumerablePropertyWhenMappingThenExceptionContainsExpectedValues()
     {
-        var mapper = new WebpageMapper<SimpleCollectionModel<System.Collections.IEnumerable>>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<SimpleCollectionModel<System.Collections.IEnumerable>>(GivenHtml);
 
         var exception = act.Should().ThrowExactly<CollectionTypeDefinitionException>().Which;
         Assert.Multiple(
@@ -45,9 +41,7 @@ public class UnsupportedNonGenericCollectionTypeTests
     [Fact]
     public void GivenStringCollectionPropertyWhenMappingThenThrowExpectedException()
     {
-        var mapper = new WebpageMapper<SimpleCollectionModel<StringCollection>>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<SimpleCollectionModel<StringCollection>>(GivenHtml);
 
         act.Should().ThrowExactly<CollectionTypeDefinitionException>()
             .WithMessage("Property 'Paragraphs' has a non-generic collection type 'StringCollection'. Use 'List<T>' or an interface implemented by 'List<T>'.");
@@ -56,9 +50,7 @@ public class UnsupportedNonGenericCollectionTypeTests
     [Fact]
     public void GivenStringCollectionPropertyWhenMappingThenExceptionContainsExpectedValues()
     {
-        var mapper = new WebpageMapper<SimpleCollectionModel<StringCollection>>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<SimpleCollectionModel<StringCollection>>(GivenHtml);
 
         var exception = act.Should().ThrowExactly<CollectionTypeDefinitionException>().Which;
         Assert.Multiple(

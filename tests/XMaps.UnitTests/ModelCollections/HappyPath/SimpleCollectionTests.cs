@@ -1,4 +1,4 @@
-﻿namespace XMaps.UnitTests.HappyPath;
+﻿namespace XMaps.UnitTests.ModelCollections.HappyPath;
 
 public class SimpleCollectionTests
 {
@@ -47,9 +47,7 @@ public class SimpleCollectionTests
 
     private void TestCollectionType<T>()
     {
-        var mapper = new WebpageMapper<SimpleCollectionModel<T>>();
-
-        var result = mapper.Map(GivenHtml);
+        var result = HtmlMapper.Map<SimpleCollectionModel<T>>(GivenHtml);
 
         result.Paragraphs.Should().BeEquivalentTo(_expected);
     }

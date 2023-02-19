@@ -24,9 +24,7 @@ public class MappingToStringTests
     [Fact]
     public void GivenSimpleTestModelWhenMappingInnerTextToStringThenContainsExpectedValues()
     {
-        var mapper = new WebpageMapper<SimpleTestModel>();
-
-        var result = mapper.Map(GivenHtml);
+        var result = HtmlMapper.Map<SimpleTestModel>(GivenHtml);
 
         result.Should()
             .BeEquivalentTo(new SimpleTestModel("Welcome!", "Lorem ipsum"));

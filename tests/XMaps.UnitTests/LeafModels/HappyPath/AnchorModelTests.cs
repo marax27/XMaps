@@ -24,9 +24,7 @@ public class AnchorModelTests
     [Fact]
     public void GivenModelWithAnchorPropertyWhenMappingThenMapSuccessfully()
     {
-        var mapper = new WebpageMapper<ModelWithAnchorProperty>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<ModelWithAnchorProperty>(GivenHtml);
 
         act.Should().NotThrow();
     }
@@ -34,9 +32,7 @@ public class AnchorModelTests
     [Fact]
     public void GivenModelWithAnchorPropertyWhenMappingThenContainExpectedValues()
     {
-        var mapper = new WebpageMapper<ModelWithAnchorProperty>();
-
-        var result = mapper.Map(GivenHtml);
+        var result = HtmlMapper.Map<ModelWithAnchorProperty>(GivenHtml);
 
         result.Anchor.Should().BeEquivalentTo(new AnchorModel("highlighted link", "/about"));
     }
@@ -44,9 +40,7 @@ public class AnchorModelTests
     [Fact]
     public void GivenModelWithAnchorCollectionPropertyWhenMappingThenMapSuccessfully()
     {
-        var mapper = new WebpageMapper<ModelWithAnchorCollectionProperty>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<ModelWithAnchorCollectionProperty>(GivenHtml);
 
         act.Should().NotThrow();
     }
@@ -54,9 +48,7 @@ public class AnchorModelTests
     [Fact]
     public void GivenModelWithAnchorCollectionPropertyWhenMappingThenContainExpectedValues()
     {
-        var mapper = new WebpageMapper<ModelWithAnchorCollectionProperty>();
-
-        var result = mapper.Map(GivenHtml);
+        var result = HtmlMapper.Map<ModelWithAnchorCollectionProperty>(GivenHtml);
 
         Assert.Multiple(
             () => result.Anchors[0].Should().BeEquivalentTo(new AnchorModel("Home", "/")),

@@ -1,6 +1,6 @@
 ﻿using XMaps.Exceptions;
 
-namespace XMaps.UnitTests.SadPath;
+namespace XMaps.UnitTests.Basics.SadPath;
 
 public class NodeNotFoundTests
 {
@@ -25,9 +25,7 @@ public class NodeNotFoundTests
     [Fact]
     public void GivenModelWithMissingNodeWhenMappingThenThrowExpectedException()
     {
-        var mapper = new WebpageMapper<ArticleWithoutFooterModel>();
-
-        var act = () => mapper.Map(GivenSampleHtml);
+        var act = () => HtmlMapper.Map<ArticleWithoutFooterModel>(GivenSampleHtml);
 
         var exception = act.Should()
             .ThrowExactly<NodeNotFoundException>()
@@ -37,9 +35,7 @@ public class NodeNotFoundTests
     [Fact]
     public void GivenModelWithMissingNodeWhenMappingThenExceptionContainsExpectedData()
     {
-        var mapper = new WebpageMapper<ArticleWithoutFooterModel>();
-
-        var act = () => mapper.Map(GivenSampleHtml);
+        var act = () => HtmlMapper.Map<ArticleWithoutFooterModel>(GivenSampleHtml);
 
         var exception = act.Should().ThrowExactly<NodeNotFoundException>().Which;
         Assert.Multiple(

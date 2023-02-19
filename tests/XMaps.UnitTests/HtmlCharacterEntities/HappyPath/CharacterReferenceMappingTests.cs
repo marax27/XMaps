@@ -14,9 +14,7 @@ public class CharacterReferenceMappingTests
     [Fact]
     public void GivenHtmlWithNamedCharacterEntityWhenMappingThenConvertCharacter()
     {
-        var mapper = new WebpageMapper<CharacterReferenceMappingModel>();
-
-        var result = mapper.Map(GivenHtml);
+        var result = HtmlMapper.Map<CharacterReferenceMappingModel>(GivenHtml);
 
         result.Paragraph.Should().Be("Some text with a & character");
     }
@@ -24,9 +22,7 @@ public class CharacterReferenceMappingTests
     [Fact]
     public void GivenHtmlWithUnnamedCharacterEntityWhenMappingThenConvertCharacter()
     {
-        var mapper = new WebpageMapper<CharacterReferenceMappingModel>();
-
-        var result = mapper.Map(GivenHtml);
+        var result = HtmlMapper.Map<CharacterReferenceMappingModel>(GivenHtml);
 
         result.Span.Should().Be("Less than sign (<)");
     }

@@ -1,70 +1,18 @@
-﻿using HtmlAgilityPack;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using XMaps.Exceptions;
 using XMaps.Reflection;
 
-namespace XMaps;
+namespace XMaps.Mappers;
 
-internal sealed class HtmlAgilityPackNode : IHtmlNode
+internal sealed class BasicWebpageMapper<TModel> where TModel : class
 {
-    private readonly HtmlNode _node;
-
-    internal HtmlAgilityPackNode(HtmlNode node)
-    {
-        _node = node ?? throw new ArgumentNullException(nameof(node));
-        HtmlAttributes = _node.Attributes
-            .ToDictionary(x => x.Name, x => x.Value);
-    }
-
-    public string InnerText => HtmlEntity.DeEntitize(_node.InnerText);
-
-    public string Name => _node.Name;
-
-    public IReadOnlyDictionary<string, string> HtmlAttributes { get; }
-
-    public IHtmlNode? SelectFirstOrDefault(string xpath)
-    {
-        var node = _node.SelectSingleNode(xpath);
-        return node is null
-            ? null
-            : new HtmlAgilityPackNode(node);
-    }
-
-    public IEnumerable<IHtmlNode> SelectAll(string xpath)
-    {
-        var nodes = _node.SelectNodes(xpath);
-
-        if (nodes is null) yield break;
-
-        foreach (var node in nodes)
-            yield return new HtmlAgilityPackNode(node);
-    }
-}
-
-public sealed class WebpageMapper<TModel> where TModel : class
-{
-    /// <summary>
-    ///     Map an HTML document into an instance of <c>TModel</c>.
-    /// </summary>
-    /// <remarks><c>TModel</c> must be a valid model type.</remarks>
-    /// <param name="givenHtml">HTML in text format.</param>
-    /// <returns>Initialized instance of <c>TModel</c>.</returns>
-    /// <exception cref="XMapsException"></exception>
-    /// <exception cref="InvalidOperationException"></exception>
-    public TModel Map(string givenHtml)
-    {
-        var document = new HtmlDocument();
-        document.LoadHtml(givenHtml);
-        return MapDocument(document);
-    }
-
-    private TModel MapDocument(HtmlDocument document)
+    public TModel Map(IHtmlNode rootNode)
     {
         var rootXPath = TryGetRootXPath();
-        var startingNode = GetStartingNode(document, rootXPath);
+        var startingNode = GetStartingNode(rootNode, rootXPath);
 
         var result = MapNodeToModel(startingNode, typeof(TModel), rootXPath);
 
@@ -156,11 +104,11 @@ public sealed class WebpageMapper<TModel> where TModel : class
         );
     }
 
-    private static IHtmlNode GetStartingNode(HtmlDocument document, string? rootXPath)
+    private static IHtmlNode GetStartingNode(IHtmlNode rootNode, string? rootXPath)
     {
         var startingNode = rootXPath is null
-            ? document.DocumentNode
-            : document.DocumentNode.SelectSingleNode(rootXPath);
+            ? rootNode
+            : rootNode.SelectFirstOrDefault(rootXPath);
 
         if (startingNode is null)
         {
@@ -168,7 +116,7 @@ public sealed class WebpageMapper<TModel> where TModel : class
             throw new StartingNodeNotFoundException($"Starting node not found for type '{rootType.Name}' (XPath: '{rootXPath}').", rootType, rootXPath);
         }
 
-        return new HtmlAgilityPackNode(startingNode);
+        return startingNode;
     }
 
     private static Type? CheckForCollectionType(ModelConstructorParameter parameter, Type modelType)

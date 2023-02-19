@@ -21,9 +21,7 @@ public class MapDeeplyNestedModelTests
     [Fact]
     public void GivenDeeplyNestedModelWhenMappingThenMapPageLevelData()
     {
-        var mapper = new WebpageMapper<PageModel>();
-
-        var result = mapper.Map(GivenHtml);
+        var result = HtmlMapper.Map<PageModel>(GivenHtml);
 
         result.Footer.Should().Be("Some footer");
     }
@@ -31,9 +29,7 @@ public class MapDeeplyNestedModelTests
     [Fact]
     public void GivenDeeplyNestedModelWhenMappingThenMapPanelLevelData()
     {
-        var mapper = new WebpageMapper<PageModel>();
-
-        var result = mapper.Map(GivenHtml);
+        var result = HtmlMapper.Map<PageModel>(GivenHtml);
 
         result.Panel.Header.Should().Be("Some title");
     }
@@ -41,9 +37,7 @@ public class MapDeeplyNestedModelTests
     [Fact]
     public void GivenDeeplyNestedModelWhenMappingThenMapCardLevelData()
     {
-        var mapper = new WebpageMapper<PageModel>();
-
-        var result = mapper.Map(GivenHtml);
+        var result = HtmlMapper.Map<PageModel>(GivenHtml);
 
         result.Panel.Card.Title.Should().Be("Card header");
         result.Panel.Card.Paragraph.Should().Be("Card paragraph");

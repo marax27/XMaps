@@ -15,9 +15,7 @@ public class UnknownCharacterReferenceMappingTests
     [Fact]
     public void GivenInvalidCharacterEntityInHtmlWhenMappingThenMapSuccessfully()
     {
-        var mapper = new WebpageMapper<UnknownCharacterReferenceModel>();
-
-        var result = mapper.Map(GivenHtml);
+        var result = HtmlMapper.Map<UnknownCharacterReferenceModel>(GivenHtml);
 
         result.Paragraph.Should().Be("'Cited text' and a character &invalid;");
     }

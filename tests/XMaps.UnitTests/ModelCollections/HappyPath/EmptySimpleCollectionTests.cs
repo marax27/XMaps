@@ -1,4 +1,4 @@
-﻿namespace XMaps.UnitTests.HappyPath;
+﻿namespace XMaps.UnitTests.ModelCollections.HappyPath;
 
 public class EmptySimpleCollectionTests
 {
@@ -15,9 +15,7 @@ public class EmptySimpleCollectionTests
     [Fact]
     public void GivenSimpleCollectionWhenMappingThenReturnEmptyCollection()
     {
-        var mapper = new WebpageMapper<SimpleCollectionModel<List<string>>>();
-
-        var result = mapper.Map(GivenHtml);
+        var result = HtmlMapper.Map<SimpleCollectionModel<List<string>>>(GivenHtml);
 
         result.Paragraphs.Should().BeEmpty();
     }
@@ -25,9 +23,7 @@ public class EmptySimpleCollectionTests
     [Fact]
     public void GivenNullableSimpleCollectionWhenMappingThenReturnEmptyCollection()
     {
-        var mapper = new WebpageMapper<SimpleCollectionModel<List<string>?>>();
-
-        var result = mapper.Map(GivenHtml);
+        var result = HtmlMapper.Map<SimpleCollectionModel<List<string>?>>(GivenHtml);
 
         result.Paragraphs.Should().BeEmpty();
     }

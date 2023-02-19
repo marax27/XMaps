@@ -1,6 +1,6 @@
 ﻿using XMaps.Exceptions;
 
-namespace XMaps.UnitTests.SadPath;
+namespace XMaps.UnitTests.Basics.SadPath;
 
 public class StartingNodeNotFoundTests
 {
@@ -17,9 +17,7 @@ public class StartingNodeNotFoundTests
     [Fact]
     public void GivenStartingNodeNotFoundWhenMappingThenThrowExpectedException()
     {
-        var mapper = new WebpageMapper<StartingNodeNotFoundModel>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<StartingNodeNotFoundModel>(GivenHtml);
 
         act.Should().ThrowExactly<StartingNodeNotFoundException>()
             .WithMessage("Starting node not found for type 'StartingNodeNotFoundModel' (XPath: '//div[@class='main']').");
@@ -28,9 +26,7 @@ public class StartingNodeNotFoundTests
     [Fact]
     public void GivenStartingNodeNotFoundWhenMappingThenExceptionContainsExpectedValues()
     {
-        var mapper = new WebpageMapper<StartingNodeNotFoundModel>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<StartingNodeNotFoundModel>(GivenHtml);
 
         var exception = act.Should().ThrowExactly<StartingNodeNotFoundException>().Which;
         Assert.Multiple(

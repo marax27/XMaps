@@ -17,9 +17,7 @@ public class InvalidAtAttributeTests
     [Fact]
     public void GivenParameterWithoutAtAttributeWhenMappingThenThrowExpectedException()
     {
-        var mapper = new WebpageMapper<MissingAtAttributeModel>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<MissingAtAttributeModel>(GivenHtml);
 
         act.Should().ThrowExactly<ModelDefinitionException>()
             .WithMessage("Parameter 'Content' contains 0 [At] attributes; exactly 1 is expected.")
@@ -29,9 +27,7 @@ public class InvalidAtAttributeTests
     [Fact]
     public void GivenParameterWithEmptyXPathWhenMappingThenThrowExpectedException()
     {
-        var mapper = new WebpageMapper<EmptyXPathModel>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<EmptyXPathModel>(GivenHtml);
 
         act.Should().ThrowExactly<ModelDefinitionException>()
             .WithMessage("Missing XPath for a parameter 'Title'.")
@@ -41,9 +37,7 @@ public class InvalidAtAttributeTests
     [Fact]
     public void GivenParameterWithWhitespaceXPathWhenMappingThenThrowExpectedException()
     {
-        var mapper = new WebpageMapper<WhitespaceXPathModel>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<WhitespaceXPathModel>(GivenHtml);
 
         act.Should().ThrowExactly<ModelDefinitionException>()
             .WithMessage("Missing XPath for a parameter 'Content'.")
@@ -53,9 +47,7 @@ public class InvalidAtAttributeTests
     [Fact]
     public void GivenParameterWithNullXPathWhenMappingThenThrowExpectedException()
     {
-        var mapper = new WebpageMapper<NullXPathModel>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<NullXPathModel>(GivenHtml);
 
         act.Should().ThrowExactly<ModelDefinitionException>()
             .WithMessage("Missing XPath for a parameter 'Footer'.")

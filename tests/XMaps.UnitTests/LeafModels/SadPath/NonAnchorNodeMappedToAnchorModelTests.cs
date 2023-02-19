@@ -22,9 +22,7 @@ public class NonAnchorNodeMappedToAnchorModelTests
     [Fact]
     public void GivenModelWithAnchorPropertyWhenMappingNonAnchorNodeThenThrowExpectedException()
     {
-        var mapper = new WebpageMapper<NonAnchorNodeMappedToAnchorModel>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<NonAnchorNodeMappedToAnchorModel>(GivenHtml);
 
         act.Should().ThrowExactly<LeafModelException>()
             .WithMessage("Failed to instantiate the 'AnchorModel'. Expected '<a>' node, but found '<h1>'. (Parameter 'node')");
@@ -33,9 +31,7 @@ public class NonAnchorNodeMappedToAnchorModelTests
     [Fact]
     public void GivenModelWithAnchorPropertyWhenMappingNonAnchorNodeThenExceptionContainsExpectedValues()
     {
-        var mapper = new WebpageMapper<NonAnchorNodeMappedToAnchorModel>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<NonAnchorNodeMappedToAnchorModel>(GivenHtml);
 
         var exception = act.Should().ThrowExactly<LeafModelException>().Which;
         Assert.Multiple(

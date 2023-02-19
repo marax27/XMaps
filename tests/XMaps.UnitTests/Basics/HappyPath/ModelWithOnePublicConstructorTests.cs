@@ -17,9 +17,7 @@ public class ModelWithOnePublicConstructorTests
     [Fact]
     public void GivenRecordWithOnePublicConstructorWhenMappingThenMapSuccessfully()
     {
-        var mapper = new WebpageMapper<RecordWithNonPublicConstructors>();
-
-        var result = mapper.Map(GivenHtml);
+        var result = HtmlMapper.Map<RecordWithNonPublicConstructors>(GivenHtml);
 
         result.Should().BeEquivalentTo(new RecordWithNonPublicConstructors("Navigation link", "Label under nav link."));
     }
@@ -27,9 +25,7 @@ public class ModelWithOnePublicConstructorTests
     [Fact]
     public void GivenClassWithOnePublicConstructorWhenMappingThenMapSuccessfully()
     {
-        var mapper = new WebpageMapper<ClassWithNonPublicConstructors>();
-
-        var result = mapper.Map(GivenHtml);
+        var result = HtmlMapper.Map<ClassWithNonPublicConstructors>(GivenHtml);
 
         result.Should().BeEquivalentTo(new RecordWithNonPublicConstructors("Navigation link", "Label under nav link."));
     }

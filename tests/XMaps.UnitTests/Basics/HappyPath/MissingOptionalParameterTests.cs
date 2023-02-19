@@ -25,9 +25,8 @@ public class MissingOptionalParameterTests
     public void GivenModelWithOptionalParameterWhenMappingThenMapSuccessfully(string givenHtml, string? expectedSubHeader)
     {
         var expected = new ModelWithNullableField("Some title", expectedSubHeader);
-        var mapper = new WebpageMapper<ModelWithNullableField>();
-
-        var actual = mapper.Map(givenHtml);
+        
+        var actual = HtmlMapper.Map<ModelWithNullableField>(givenHtml);
 
         actual.Should().BeEquivalentTo(expected);
     }

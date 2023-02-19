@@ -52,9 +52,7 @@ public class NodeNotFoundForDeeplyNestedModelTests
     [Fact]
     public void GivenMissingFirstLevelNodeWhenMappingThenThrowExpectedException()
     {
-        var mapper = new WebpageMapper<PageModel>();
-
-        var act = () => mapper.Map(GivenMissingPageFooterHtml);
+        var act = () => HtmlMapper.Map<PageModel>(GivenMissingPageFooterHtml);
 
         act.Should()
             .ThrowExactly<NodeNotFoundException>()
@@ -64,9 +62,7 @@ public class NodeNotFoundForDeeplyNestedModelTests
     [Fact]
     public void GivenMissingFirstLevelNodeWhenMappingThenExceptionContainsExpectedData()
     {
-        var mapper = new WebpageMapper<PageModel>();
-
-        var act = () => mapper.Map(GivenMissingPageFooterHtml);
+        var act = () => HtmlMapper.Map<PageModel>(GivenMissingPageFooterHtml);
 
         var exception = act.Should().ThrowExactly<NodeNotFoundException>().Which;
         Assert.Multiple(
@@ -81,9 +77,7 @@ public class NodeNotFoundForDeeplyNestedModelTests
     [Fact]
     public void GivenMissingSecondLevelNodeWhenMappingThenThrowExpectedException()
     {
-        var mapper = new WebpageMapper<PageModel>();
-
-        var act = () => mapper.Map(GivenMissingPanelHeaderHtml);
+        var act = () => HtmlMapper.Map<PageModel>(GivenMissingPanelHeaderHtml);
 
         act.Should()
             .ThrowExactly<NodeNotFoundException>()
@@ -93,9 +87,7 @@ public class NodeNotFoundForDeeplyNestedModelTests
     [Fact]
     public void GivenMissingSecondLevelNodeWhenMappingThenExceptionContainsExpectedData()
     {
-        var mapper = new WebpageMapper<PageModel>();
-
-        var act = () => mapper.Map(GivenMissingPanelHeaderHtml);
+        var act = () => HtmlMapper.Map<PageModel>(GivenMissingPanelHeaderHtml);
 
         var exception = act.Should().ThrowExactly<NodeNotFoundException>().Which;
         Assert.Multiple(
@@ -110,9 +102,7 @@ public class NodeNotFoundForDeeplyNestedModelTests
     [Fact]
     public void GivenMissingThirdLevelNodeWhenMappingThenThrowExpectedException()
     {
-        var mapper = new WebpageMapper<PageModel>();
-
-        var act = () => mapper.Map(GivenMissingCardParagraphHtml);
+        var act = () => HtmlMapper.Map<PageModel>(GivenMissingCardParagraphHtml);
 
         act.Should()
             .ThrowExactly<NodeNotFoundException>()
@@ -122,9 +112,7 @@ public class NodeNotFoundForDeeplyNestedModelTests
     [Fact]
     public void GivenMissingThirdLevelNodeWhenMappingThenExceptionContainsExpectedData()
     {
-        var mapper = new WebpageMapper<PageModel>();
-
-        var act = () => mapper.Map(GivenMissingCardParagraphHtml);
+        var act = () => HtmlMapper.Map<PageModel>(GivenMissingCardParagraphHtml);
 
         var exception = act.Should().ThrowExactly<NodeNotFoundException>().Which;
         Assert.Multiple(

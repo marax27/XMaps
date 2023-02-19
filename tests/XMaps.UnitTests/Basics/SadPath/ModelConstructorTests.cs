@@ -20,9 +20,7 @@ public class ModelConstructorTests
     [Fact]
     public void GivenModelWithMultiplePublicConstructorsThenThrowExpectedException()
     {
-        var mapper = new WebpageMapper<MultipleConstructorsModel>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<MultipleConstructorsModel>(GivenHtml);
 
         act.Should().ThrowExactly<ModelConstructorException>()
             .WithMessage("Ambiguous model construction for 'MultipleConstructorsModel': found 3 public constructors, expected 1.");
@@ -31,9 +29,7 @@ public class ModelConstructorTests
     [Fact]
     public void GivenModelWithNoPublicConstructorsThenThrowExpectedException()
     {
-        var mapper = new WebpageMapper<NoPublicConstructorModel>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<NoPublicConstructorModel>(GivenHtml);
 
         act.Should().ThrowExactly<ModelConstructorException>()
             .WithMessage("Failed to find a public constructor of type 'NoPublicConstructorModel'.");

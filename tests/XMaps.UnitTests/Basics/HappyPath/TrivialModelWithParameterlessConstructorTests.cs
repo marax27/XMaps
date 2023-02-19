@@ -15,9 +15,7 @@ public class TrivialModelWithParameterlessConstructorTests
     [Fact]
     public void GivenRecordWithParameterlessConstructorWhenMappingThenMapSuccessfully()
     {
-        var model = new WebpageMapper<EmptyRecordWithParameterlessConstructor>();
-
-        var result = model.Map(GivenHtml);
+        var result = HtmlMapper.Map<EmptyRecordWithParameterlessConstructor>(GivenHtml);
 
         result.Should().NotBeNull();
     }
@@ -25,9 +23,7 @@ public class TrivialModelWithParameterlessConstructorTests
     [Fact]
     public void GivenClassWithParameterlessConstructorWhenMappingThenMapSuccessfully()
     {
-        var model = new WebpageMapper<EmptyClassWithParameterlessConstructor>();
-
-        var result = model.Map(GivenHtml);
+        var result = HtmlMapper.Map<EmptyClassWithParameterlessConstructor>(GivenHtml);
 
         result.Should().NotBeNull();
     }

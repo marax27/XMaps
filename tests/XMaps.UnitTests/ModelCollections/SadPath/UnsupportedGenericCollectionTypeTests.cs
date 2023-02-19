@@ -20,9 +20,7 @@ public class UnsupportedGenericCollectionTypeTests
     [Fact]
     public void GivenHashSetPropertyWhenMappingThenThrowExpectedException()
     {
-        var mapper = new WebpageMapper<SimpleCollectionModel<HashSet<string>>>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<SimpleCollectionModel<HashSet<string>>>(GivenHtml);
 
         act.Should().ThrowExactly<CollectionTypeDefinitionException>()
             .WithMessage("Property 'Paragraphs' has an invalid collection type 'HashSet`1'. Use 'List<T>' or an interface implemented by 'List<T>'.");
@@ -31,9 +29,7 @@ public class UnsupportedGenericCollectionTypeTests
     [Fact]
     public void GivenHashSetPropertyWhenMappingThenExceptionContainsExpectedValues()
     {
-        var mapper = new WebpageMapper<SimpleCollectionModel<HashSet<string>>>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<SimpleCollectionModel<HashSet<string>>>(GivenHtml);
 
         var exception = act.Should().ThrowExactly<CollectionTypeDefinitionException>().Which;
         Assert.Multiple(
@@ -45,9 +41,7 @@ public class UnsupportedGenericCollectionTypeTests
     [Fact]
     public void GivenISetPropertyWhenMappingThenThrowExpectedException()
     {
-        var mapper = new WebpageMapper<SimpleCollectionModel<ISet<string>>>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<SimpleCollectionModel<ISet<string>>>(GivenHtml);
 
         act.Should().ThrowExactly<CollectionTypeDefinitionException>()
             .WithMessage("Property 'Paragraphs' has an invalid collection type 'ISet`1'. Use 'List<T>' or an interface implemented by 'List<T>'.");
@@ -56,9 +50,7 @@ public class UnsupportedGenericCollectionTypeTests
     [Fact]
     public void GivenISetPropertyWhenMappingThenExceptionContainsExpectedValues()
     {
-        var mapper = new WebpageMapper<SimpleCollectionModel<ISet<string>>>();
-
-        var act = () => mapper.Map(GivenHtml);
+        var act = () => HtmlMapper.Map<SimpleCollectionModel<ISet<string>>>(GivenHtml);
 
         var exception = act.Should().ThrowExactly<CollectionTypeDefinitionException>().Which;
         Assert.Multiple(

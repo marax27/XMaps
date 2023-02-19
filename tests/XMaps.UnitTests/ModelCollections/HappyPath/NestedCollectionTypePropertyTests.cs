@@ -32,9 +32,7 @@ public class NestedCollectionTypePropertyTests
     [Fact]
     public void GivenCollectionPropertyInNestedModelWhenMappingThenHasExpectedNumberOfCards()
     {
-        var mapper = new WebpageMapper<NestedCollectionModel>();
-
-        var result = mapper.Map(GivenHtml);
+        var result = HtmlMapper.Map<NestedCollectionModel>(GivenHtml);
 
         result.Cards.Should().HaveCount(3);
     }
@@ -42,9 +40,7 @@ public class NestedCollectionTypePropertyTests
     [Fact]
     public void GivenCollectionPropertyInNestedModelWhenMappingThenCardsHaveExpectedValues()
     {
-        var mapper = new WebpageMapper<NestedCollectionModel>();
-
-        var result = mapper.Map(GivenHtml);
+        var result = HtmlMapper.Map<NestedCollectionModel>(GivenHtml);
 
         result.Cards.Should().BeEquivalentTo(new NestedCollectionCardModel[]
         {
