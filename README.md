@@ -1,3 +1,5 @@
+[![.NET Build and Test](https://github.com/marax27/XMaps/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/marax27/XMaps/actions/workflows/build-and-test.yml)
+
 _Declaratively map HTML code to a .NET type._
 
 # About the library
