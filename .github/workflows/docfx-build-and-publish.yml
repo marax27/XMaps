@@ -5,9 +5,9 @@ on:
   pull_request:
     branches: [ main ]
 jobs:
-  build:
+  build-and-publish:
     runs-on: ubuntu-latest
-    name: Build XMaps docs
+    name: Build and Publish XMaps Docs
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET
@@ -18,17 +18,10 @@ jobs:
       uses: nikeee/docfx-action@v1.0.0
       with:
         args: docs_docfx/docfx.json
-  publish:
-    needs: build
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
-    
+    - name: Deploy docs
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        personal_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs_docfx/_site
+        publish_branch: docs-page
+        force_orphan: true
