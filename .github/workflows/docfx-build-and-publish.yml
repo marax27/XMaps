@@ -18,10 +18,8 @@ jobs:
       uses: nikeee/docfx-action@v1.0.0
       with:
         args: docs_docfx/docfx.json
-    - name: Deploy docs
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        personal_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: _site
-        publish_branch: docs-page
-        force_orphan: true
+    - uses: maxheld83/ghpages@master
+      name: Publish Documentation on GitHub Pages
+      env:
+        BUILD_DIR: _site # docfx's default output directory is _site
+        GH_PAT: ${{ secrets.GH_PAT }} # See https://github.com/maxheld83/ghpages
