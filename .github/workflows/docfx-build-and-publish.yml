@@ -5,9 +5,9 @@ on:
   pull_request:
     branches: [ main ]
 jobs:
-  generate-docs:
+  build:
     runs-on: ubuntu-latest
-    name: Generate XMaps docs
+    name: Build XMaps docs
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET
@@ -18,8 +18,17 @@ jobs:
       uses: nikeee/docfx-action@v1.0.0
       with:
         args: docs_docfx/docfx.json
-    - uses: maxheld83/ghpages@master
-      name: Publish Documentation on GitHub Pages
-      env:
-        BUILD_DIR: docs_docfx/_site
-        GH_PAT: ${{ secrets.GH_PAT }}
+  publish:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
+    
