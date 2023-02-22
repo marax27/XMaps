@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>XMaps Homepage </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="XMaps Homepage ">
+    <meta name="generator" content="docfx 2.56.7.0">
+    
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="stylesheet" href="styles/docfx.vendor.css">
+    <link rel="stylesheet" href="styles/docfx.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <meta property="docfx:navrel" content="toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="index.html">
+                <img id="logo" class="svg" src="logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        <div class="article row grid">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="xmaps-homepage">XMaps Homepage</h1>
+
+<p><em>Declaratively map HTML code to a .NET type.</em></p>
+<p>Transform HTML code into a structured .NET object with just a few lines of code! Whether you&#39;re dealing with a simple or a deeply-nested HTML document - simply annotate constructor parameters of your class with XPath expressions, and let XMaps do the rest.</p>
+<h2 id="getting-started">Getting started</h2>
+<p>XMaps requires two things to work: <strong>input HTML</strong> and a <strong>model type</strong>. The model can be a regular class or a <a href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/record">record</a> (C# 9+). In fact, XMaps takes advantage of the new record syntax to make mapping even more concise. Here&#39;s an example of a model record:</p>
+<pre><code class="lang-php">[At(&quot;//article&quot;)]                                 /* Entry node: first &lt;article&gt; node in the document */
+record ArticleModel(
+    [At(&quot;h1&quot;)] string Title,                      /* map first &lt;h1&gt; child of &lt;article&gt; */
+    [At(&quot;span[@class=&#39;author&#39;]&quot;)] string Author,  /* map first &lt;span class=&#39;author&#39;&gt; child of &lt;article&gt; */
+    [At(&quot;span[@class=&#39;date&#39;]&quot;)] string Date       /* map first &lt;span class=&#39;date&#39;&gt; child of &lt;article&gt; */
+);
+</code></pre><p>which could be used like this:</p>
+<pre><code class="lang-csharp">using XMaps;
+
+var html = @&quot;
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;article&gt;
+      &lt;h1&gt;Welcome!&lt;/h1&gt;
+      &lt;span class=&quot;&quot;author&quot;&quot;&gt;John Doe&lt;/span&gt;
+      &lt;span class=&quot;&quot;date&quot;&quot;&gt;2021-01-01&lt;/span&gt;
+    &lt;/article&gt;
+  &lt;/body&gt;
+&lt;/html&gt;&quot;;
+
+var article = HtmlMapper.Map&lt;ArticleModel&gt;(html);
+Console.WriteLine(article);
+</code></pre><p>Keep in mind that:</p>
+<ul>
+<li>Model&#39;s <code>string</code> properties will be automatically initialized with an <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/innerText">inner text</a> of a matching node.</li>
+<li>If a node cannot be found for a non-nullable property, a <a href="/api/XMaps.Exceptions.NodeNotFoundException.html">NodeNotFoundException</a> will be thrown.</li>
+</ul>
+<h2 id="model-definition">Model definition</h2>
+<p>The <code>string</code> type isn&#39;t the only type that can be used. Model&#39;s property can be: a nullable type, a collection of models or another model. See below:</p>
+<pre><code class="lang-php">[At(&quot;//article&quot;)]
+record ArticleModel(
+    [At(&quot;h1&quot;)] string Title,                       /* mandatory - will throw if the node is not found */
+    [At(&quot;span[@class=&#39;author&#39;]&quot;)] string? Author,  /* optional - null if the node is not found */
+    [At(&quot;p&quot;)] List&lt;string&gt; Paragraphs,             /* empty if no nodes are found */
+);
+</code></pre><p>The above model could be used to map the following HTML:</p>
+<pre><code class="lang-html">&lt;html&gt;
+  &lt;body&gt;
+    &lt;article&gt;
+      &lt;h1&gt;Welcome!&lt;/h1&gt;
+      &lt;!-- &lt;span class=&quot;author&quot;&gt;John Doe&lt;/span&gt; --&gt;
+      &lt;p&gt;Lorem ipsum dolor sit amet...&lt;/p&gt;
+      &lt;p&gt;Nec nam aliquam sem et tortor...&lt;/p&gt;
+      &lt;p&gt;In nulla posuere sollicitudin aliquam...&lt;/p&gt;
+    &lt;/article&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/marax27/XMaps/blob/51691cf6486fec4aedc5ce61f01968c6feff4954/docs_docfx/index.md/#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="styles/docfx.js"></script>
+    <script type="text/javascript" src="styles/main.js"></script>
+  </body>
+</html>
