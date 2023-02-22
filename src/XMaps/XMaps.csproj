@@ -12,7 +12,7 @@
 	<PropertyGroup>
 		<PackageId>XMaps</PackageId>
 		<Title>XMaps</Title>
-		<Version>0.1.0</Version>
+		<Version>0.1.1</Version>
 		<Authors>Kacper Tonia</Authors>
 		<Description>Declaratively map HTML code to a .NET type.</Description>
 		<PackageTags>csharp;html;net;declarative;mapper</PackageTags>

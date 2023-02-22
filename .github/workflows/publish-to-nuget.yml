@@ -1,7 +1,7 @@
 name: Publish to Nuget
 on:
-  push:
-    branches: [ release ]
+  release:
+    types: [published]
 jobs:
   publish:
     runs-on: ubuntu-latest
