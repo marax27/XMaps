@@ -9,7 +9,7 @@ namespace XMaps;
 /// 2. Applied to a constructor parameter in order to map node(s) to this parameter.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Parameter, AllowMultiple = false)]
-public sealed class AtAttribute : Attribute
+public class AtAttribute : Attribute
 {
     public string XPath { get; }
 
