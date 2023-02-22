@@ -1,8 +1,8 @@
 [![.NET Build and Test](https://github.com/marax27/XMaps/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/marax27/XMaps/actions/workflows/build-and-test.yml)
 
-_Declaratively map HTML code to a .NET type._
-
 # About the library
+
+_Declaratively map HTML code to a .NET type._
 
 Transform HTML code into a structured .NET object with just a few lines of code! Whether you're dealing with a simple or a deeply-nested HTML document - simply annotate constructor parameters of your class with XPath expressions, and let XMaps do the rest.
 

@@ -8,16 +8,15 @@ namespace XMaps;
 /// The <c>AtAttribute</c> can be applied in 2 ways:
 /// <list type="bullet">
 ///     <item>
-///         <term>to a model type</term>
 ///         <description>
-///             optional. When applied to a model type, the attribute's XPath expression
-///             serves as a starting point for the model's constructor parameters.
+///             to a model type - optional. When applied to a model type, the attribute's
+///             XPath expression serves as a starting point for the model's constructor parameters.
 ///         </description>
 ///     </item>
 ///     <item>
-///         <term>to a constructor parameter</term>
 ///         <description>
-///             mandatory. It defines which HTML node corresponds to the parameter.
+///             to a constructor parameter - mandatory. It defines which HTML node corresponds
+///             to the parameter.
 ///         </description>
 ///     </item>
 /// </list>
