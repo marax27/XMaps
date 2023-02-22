@@ -1,0 +1,27 @@
+name: Publish to Nuget
+on:
+  push:
+    branches: [ release ]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 6.0.x
+      - name: Build
+        run: |
+          cd src/XMaps
+          dotnet build --configuration Release
+      - name: Pack
+        run: |
+          cd src/XMaps
+          dotnet pack --configuration Release --no-build
+      - name: Publish to NuGet
+        run: |
+          cd src/XMaps/bin/Release
+          dotnet nuget push XMaps.*.nupkg --api-key ${NUGET_API_KEY} --source https://api.nuget.org/v3/index.json
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
